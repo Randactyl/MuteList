@@ -9,4 +9,5 @@ lib\LibStub\LibStub.lua
 lib\libChat2\libChat2.lua
 lib\LibScroll\LibScroll.lua
 
+MutePlayerScene.lua
 MutePlayer.lua
