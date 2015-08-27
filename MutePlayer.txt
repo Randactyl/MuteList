@@ -1,0 +1,11 @@
+## Title: Mute Player
+## Version: 0.1.0.0
+## Author: Randactyl
+## Description: Mute a player in chat. This will be a piece of a larger addon
+## APIVersion: 100011
+## SavedVariables: MutePlayerSavedVariables
+
+lib\LibStub\LibStub.lua
+lib\libChat2\libChat2.lua
+
+MutePlayer.lua
