@@ -34,7 +34,7 @@ local function CreateScene()
     MUTE_PLAYER_SCENE:AddFragment(TOP_BAR_FRAGMENT)
 end
 
-do
+--[[do
     CreateFragment()
     CreateScene()
 
@@ -54,4 +54,4 @@ do
 
     MAIN_MENU_KEYBOARD:AddRawScene("MutePlayer", 10,
       MAIN_MENU_KEYBOARD.categoryInfo[10], "contactsSceneGroup")
-end
+end]]

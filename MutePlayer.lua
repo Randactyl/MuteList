@@ -1,3 +1,4 @@
+--do keyword matching
 local libChat = LibStub("libChat-1.0")
 local LibScroll = LibStub("LibScroll")
 local savedVars = nil
@@ -84,7 +85,7 @@ local function OnAddonLoaded(eventCode, addonName)
 
 	libChat:registerName(modifySenderName, "MutePlayer")
 
-	CreateScrollList()
+	--CreateScrollList()
 
 	InitializeSlashCommands()
 end
