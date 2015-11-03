@@ -40,8 +40,8 @@ do
 
     ZO_CreateStringId("SI_MUTE_PLAYER", "Muted")
 
-    local index = #MAIN_MENU.sceneGroupInfo.contactsSceneGroup.menuBarIconData + 1
-    MAIN_MENU.sceneGroupInfo.contactsSceneGroup.menuBarIconData[index] = {
+    local index = #MAIN_MENU_KEYBOARD.sceneGroupInfo.contactsSceneGroup.menuBarIconData + 1
+    MAIN_MENU_KEYBOARD.sceneGroupInfo.contactsSceneGroup.menuBarIconData[index] = {
         categoryName = SI_MUTE_PLAYER,
         descriptor = "MutePlayer",
         normal = "EsoUI/Art/Campaign/campaign_tabIcon_summary_up.dds",
@@ -50,7 +50,8 @@ do
     }
 
     SCENE_MANAGER:GetSceneGroup("contactsSceneGroup").scenes[index] = "MutePlayer"
-    MUTE_PLAYER_SCENE:AddFragment(ZO_FadeSceneFragment:New(MAIN_MENU.sceneGroupBar))
+    MUTE_PLAYER_SCENE:AddFragment(ZO_FadeSceneFragment:New(MAIN_MENU_KEYBOARD.sceneGroupBar))
 
-    MAIN_MENU:AddRawScene("MutePlayer", 10, MAIN_MENU.categoryInfo[10], "contactsSceneGroup")
+    MAIN_MENU_KEYBOARD:AddRawScene("MutePlayer", 10,
+      MAIN_MENU_KEYBOARD.categoryInfo[10], "contactsSceneGroup")
 end
