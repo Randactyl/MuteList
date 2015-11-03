@@ -1,7 +1,7 @@
 ## Title: Mute Player
 ## Version: 0.1.0.0
 ## Author: Randactyl
-## Description: Mute a player in chat. This will be a piece of a larger addon
+## Description: Mute a player in chat. Overrides game function SharedChatSystem:ShowPlayerContextMenu(playerName, rawName) in sharedchatsystem.lua
 ## APIVersion: 100011
 ## SavedVariables: MutePlayerSavedVariables
 
