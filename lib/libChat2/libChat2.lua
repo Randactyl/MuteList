@@ -6,58 +6,49 @@ registered trademarks or trademarks of ZeniMax Media Inc. in the United
 States and/or other countries. All rights reserved.
 You can read the full terms at https://account.elderscrollsonline.com/add-on-terms
 
-This Addon is registered under MIT Licence
+This software is under : CreativeCommons CC BY-NC-SA 4.0
+Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
 
------
+You are free to:
 
-Copyright (c) 2014, Ayantir
+    Share — copy and redistribute the material in any medium or format
+    Adapt — remix, transform, and build upon the material
+    The licensor cannot revoke these freedoms as long as you follow the license terms.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+Under the following terms:
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+    Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+    NonCommercial — You may not use the material for commercial purposes.
+    ShareAlike — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+    No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
 
------
 
-Please note that this file is NOT an *AddOn*
+Please read full licence at : 
+http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+
+
 LibChat2 is a library which must be embedded into an ESO Addon, throught its manifest like this :
 path/libChat2/libChat2.lua
 
------
-
-LibChat2 also require LibStub to work
+LibChat2 require LibStub to work
 
 Author: Ayantir
 Filename: libChat2.lua
-Version: 1.6
+Version: 9
 
 -----
 
-- YES libChat2 must be called with libChat-1.0, to keep libChat-1.0 compatibility
-
 CHAT_SYSTEM does not permit to get 2 libraries running together and using ChatBox, the first loaded into memory will rewrite EVERYTHING and other addons will fail
 
-- If you REWRITE message, you're hugely prompted to use LibChat2, without it, you'll kill other chat Addons
+- If you REWRITE message, you're hugely prompted to use LibChat2, without it, you'll surely kill other chat Addons
 	eg: Append some text, rewrite sender name, rewrite colors, etc
 	
 - DO NOT USE this library if you don't REWRITE the message sent
 - If you only APPEND something with a d() or a AddMessage(), you don't need LibChat2
 
 
-WARNING using registerFormat() : This method should only be called when rewriting from + text + infos (colors, chanCode, etc), please only use this method if your addon REWRITE the WHOLE message, Keep it for "big" chat addons !
+WARNING using registerFormat() : This method should only be called when rewriting from + text + infos (colors, chanCode, etc), please only use this method if your addon REWRITE the WHOLE message
 If you need to rewrite From, please only use registerName
 If you need to rewrite Text, please only use registerText
 If you need to append text somewhere without changing the text sent, please use one of the following methods :
@@ -72,16 +63,17 @@ Minor = 4 : LibChat2 1.2
 Minor = 5 : LibChat2 1.3 (internal release)
 Minor = 6 : LibChat2 Justice
 Minor = 7 : LibChat2 1.6
+Minor = 8 : LibChat2 8
+Minor = 9 : LibChat2 9
 
 More info : http://www.esoui.com/downloads/info740-libChat2.html
 
 ]]--
 
+local LIB_NAME, LIB_VERSION = "libChat-1.0", 9
 
-local MAJOR, MINOR = "libChat-1.0", 7
-
-local libchat, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
-if not libchat then 
+local libchat, oldminor = LibStub:NewLibrary(LIB_NAME, LIB_VERSION)
+if not libchat then
 	return
 end
 
@@ -89,15 +81,19 @@ end
 local funcName
 local funcText
 local funcFormat
+
 local funcFriendStatus
 local funcIgnoreAdd
 local funcIgnoreRemove
+local funcGroupMemberLeft
 local funcGroupTypeChanged
+
+local funcDDSBeforeAll
 local funcTextBeforeAll
 local funcDDSBeforeSender
 local funcTextBeforeSender
 local funcDDSAfterSender
-local funcTextAfterSender		
+local funcTextAfterSender
 local funcDDSBeforeText
 local funcTextBeforeText
 local funcTextAfterText
@@ -120,15 +116,15 @@ local function showCustomerService(isCustomerService)
 end
 
 -- Listens for EVENT_CHAT_MESSAGE_CHANNEL event from ZO_ChatSystem
-local function libChatMessageChannelReceiver(channelID, from, text, isCustomerService)
+local function libChatMessageChannelReceiver(channelID, from, text, isCustomerService, fromDisplayName)
 	
 	local message
 	local DDSBeforeAll = ""
 	local TextBeforeAll = ""
 	local DDSBeforeSender = ""
 	local TextBeforeSender = ""
-	local TextAfterSender = ""
 	local DDSAfterSender = ""
+	local TextAfterSender = ""
 	local DDSBeforeText = ""
 	local TextBeforeText = ""
 	local TextAfterText = ""
@@ -146,74 +142,69 @@ local function libChatMessageChannelReceiver(channelID, from, text, isCustomerSe
 	
 	-- Function to append
 	if funcDDSBeforeAll then
-		DDSBeforeAll = funcDDSBeforeAll(channelID, from, text, isCustomerService)
+		DDSBeforeAll = funcDDSBeforeAll(channelID, from, text, isCustomerService, fromDisplayName)
 	end
 	
 	-- Function to append
 	if funcTextBeforeAll then
-		TextBeforeAll = funcTextBeforeAll(channelID, from, text, isCustomerService)
-	end
-	
-	-- Function to append
-	if funcTextBeforeMessage then
-		TextBeforeMessage = funcTextBeforeMessage(channelID, from, text, isCustomerService)
+		TextBeforeAll = funcTextBeforeAll(channelID, from, text, isCustomerService, fromDisplayName)
 	end
 	
 	-- Function to append
 	if funcDDSBeforeSender then
-		DDSBeforeSender = funcDDSBeforeSender(channelID, from, text, isCustomerService)
+		DDSBeforeSender = funcDDSBeforeSender(channelID, from, text, isCustomerService, fromDisplayName)
 	end
 	
 	-- Function to append
 	if funcTextBeforeSender then
-		TextBeforeSender = funcTextBeforeSender(channelID, from, text, isCustomerService)
+		TextBeforeSender = funcTextBeforeSender(channelID, from, text, isCustomerService, fromDisplayName)
 	end
 	
 	-- Function to append
-	if registerDDSAfterSender then
-		DDSAfterSender = registerDDSAfterSender(channelID, from, text, isCustomerService)
+	if funcDDSAfterSender then
+		DDSAfterSender = funcDDSAfterSender(channelID, from, text, isCustomerService, fromDisplayName)
 	end
 	
 	-- Function to append
 	if funcTextAfterSender then
-		TextAfterSender = funcTextAfterSender(channelID, from, text, isCustomerService)
+		TextAfterSender = funcTextAfterSender(channelID, from, text, isCustomerService, fromDisplayName)
 	end
 	
 	-- Function to append
 	if funcDDSBeforeText then
-		DDSBeforeText = funcDDSBeforeText(channelID, from, text, isCustomerService)
+		DDSBeforeText = funcDDSBeforeText(channelID, from, text, isCustomerService, fromDisplayName)
 	end
 	
 	-- Function to append
 	if funcTextBeforeText then
-		TextBeforeText = funcTextBeforeText(channelID, from, text, isCustomerService)
+		TextBeforeText = funcTextBeforeText(channelID, from, text, isCustomerService, fromDisplayName)
 	end
 	
 	-- Function to append
 	if funcTextAfterText then
-		TextAfterText = funcTextAfterText(channelID, from, text, isCustomerService)
+		TextAfterText = funcTextAfterText(channelID, from, text, isCustomerService, fromDisplayName)
 	end
 	
 	-- Function to append
 	if funcDDSAfterText then
-		DDSAfterText = funcDDSAfterText(channelID, from, text, isCustomerService)
+		DDSAfterText = funcDDSAfterText(channelID, from, text, isCustomerService, fromDisplayName)
 	end
 
 	-- Function to affect From
 	if funcName then
-		from = funcName(channelID, from, isCustomerService)
+		from = funcName(channelID, from, isCustomerService, fromDisplayName)
 		if not from then return	end
 	end
 	
 	-- Function to format text
 	if funcText then
-		text = funcText(channelID, from, text, isCustomerService)
+		text = funcText(channelID, from, text, isCustomerService, fromDisplayName)
 		if not text then return end
 	end
 	
 	-- Function to format message
 	if funcFormat then
-		message = funcFormat(channelID, from, text, isCustomerService, originalFrom, originalText, DDSBeforeAll, TextBeforeAll, DDSBeforeSender, TextBeforeSender, TextAfterSender, DDSAfterSender, DDSBeforeText, TextBeforeText, TextAfterText, DDSAfterText)
+		message = funcFormat(channelID, from, text, isCustomerService, fromDisplayName, originalFrom, originalText, DDSBeforeAll, TextBeforeAll, DDSBeforeSender, TextBeforeSender, TextAfterSender, DDSAfterSender, DDSBeforeText, TextBeforeText, TextAfterText, DDSAfterText)
 		if not message then return end
 	else
 	
@@ -340,6 +331,32 @@ local function libChatIgnoreRemovedReceiver(displayName)
 	
 end
 
+-- Listens for EVENT_GROUP_MEMBER_LEFT event from ZO_ChatSystem
+local function libChatGroupMemberLeftReceiver(characterName, reason, isLocalPlayer, isLeader, memberDisplayName, actionRequiredVote)
+	
+	-- If function registrered in Addon, code will run
+	local groupMemberLeftMessage
+	
+	if funcGroupMemberLeft then
+		groupMemberLeftMessage = funcGroupMemberLeft(characterName, reason, isLocalPlayer, isLeader, memberDisplayName, actionRequiredVote)
+		if groupMemberLeftMessage then
+			return groupMemberLeftMessage
+		else
+			return
+		end
+	else
+	
+		-- Code to run with libChat loaded and Addon not registered to libchat - IT MUST BE ~SAME~ AS ESOUI -
+		if reason == GROUP_LEAVE_REASON_KICKED and isLocalPlayer and actionRequiredVote then
+			groupMemberLeftMessage = GetString(SI_GROUP_ELECTION_KICK_PLAYER_PASSED)
+		end
+		
+	end
+	
+	return groupMemberLeftMessage
+	
+end
+
 -- Listens for EVENT_GROUP_TYPE_CHANGED event from ZO_ChatSystem
 local function libChatGroupTypeChangedReceiver(largeGroup)
 	
@@ -369,39 +386,41 @@ end
 
 local function registerFunction(addonFunc, funcToUse, ...)
 
-	if funcToUse ==  "registerName" then
+	if funcToUse == "registerName" then
 		funcName = addonFunc
-	elseif funcToUse ==  "registerText" then
+	elseif funcToUse == "registerText" then
 		funcText = addonFunc
-	elseif funcToUse ==  "registerFormat" then
+	elseif funcToUse == "registerFormat" then
 		funcFormat = addonFunc
-	elseif funcToUse ==  "registerFriendStatus" then
+	elseif funcToUse == "registerFriendStatus" then
 		funcFriendStatus = addonFunc
-	elseif funcToUse ==  "registerIgnoreAdd" then
+	elseif funcToUse == "registerIgnoreAdd" then
 		funcIgnoreAdd = addonFunc
-	elseif funcToUse ==  "registerIgnoreRemove" then
+	elseif funcToUse == "registerIgnoreRemove" then
 		funcIgnoreRemove = addonFunc
-	elseif funcToUse ==  "registerGroupTypeChanged" then
+	elseif funcToUse == "registerGroupMemberLeft" then
+		funcGroupMemberLeft = addonFunc
+	elseif funcToUse == "registerGroupTypeChanged" then
 		funcGroupTypeChanged = addonFunc
-	elseif funcToUse ==  "registerAppendDDSBeforeAll" then
+	elseif funcToUse == "registerAppendDDSBeforeAll" then
 		funcDDSBeforeAll = addonFunc
-	elseif funcToUse ==  "registerAppendTextBeforeAll" then
+	elseif funcToUse == "registerAppendTextBeforeAll" then
 		funcTextBeforeAll = addonFunc
-	elseif funcToUse ==  "registerAppendDDSBeforeSender" then
+	elseif funcToUse == "registerAppendDDSBeforeSender" then
 		funcDDSBeforeSender = addonFunc
-	elseif funcToUse ==  "registerAppendTextBeforeSender" then
+	elseif funcToUse == "registerAppendTextBeforeSender" then
 		funcTextBeforeSender = addonFunc
-	elseif funcToUse ==  "registerAppendDDSAfterSender" then
+	elseif funcToUse == "registerAppendDDSAfterSender" then
 		funcDDSAfterSender = addonFunc
-	elseif funcToUse ==  "registerAppendTextAfterSender" then
-		funcTextAfterSender = addonFunc		
-	elseif funcToUse ==  "registerAppendDDSBeforeText" then
+	elseif funcToUse == "registerAppendTextAfterSender" then
+		funcTextAfterSender = addonFunc
+	elseif funcToUse == "registerAppendDDSBeforeText" then
 		funcDDSBeforeText = addonFunc
-	elseif funcToUse ==  "registerAppendTextBeforeText" then
+	elseif funcToUse == "registerAppendTextBeforeText" then
 		funcTextBeforeText = addonFunc
-	elseif funcToUse ==  "registerAppendTextAfterText" then
+	elseif funcToUse == "registerAppendTextAfterText" then
 		funcTextAfterText = addonFunc
-	elseif funcToUse ==  "registerAppendDDSAfterText" then
+	elseif funcToUse == "registerAppendDDSAfterText" then
 		funcDDSAfterText = addonFunc
 	end
 	
@@ -453,6 +472,11 @@ end
 -- Register a function to be called to format IgnoreRemove Message
 function libchat:registerIgnoreRemove(func, ...)
 	registerFunction(func, "registerIgnoreRemove", ...)
+end
+
+-- Register a function to be called to format GroupTypeChanged Message
+function libchat:registerGroupMemberLeft(func, ...)
+	registerFunction(func, "registerGroupMemberLeft", ...)
 end
 
 -- Register a function to be called to format GroupTypeChanged Message
@@ -538,7 +562,6 @@ ZO_ChatSystem_AddEventHandler(EVENT_FRIEND_PLAYER_STATUS_CHANGED, libChatFriendP
 ZO_ChatSystem_AddEventHandler(EVENT_IGNORE_ADDED, libChatIgnoreAddedReceiver)
 ZO_ChatSystem_AddEventHandler(EVENT_IGNORE_REMOVED, libChatIgnoreRemovedReceiver)
 
-ZO_ChatSystem_AddEventHandler(EVENT_GROUP_MEMBER_JOINED, libChatGroupMemberJoinedReceiver)
 ZO_ChatSystem_AddEventHandler(EVENT_GROUP_MEMBER_LEFT, libChatGroupMemberLeftReceiver)
 ZO_ChatSystem_AddEventHandler(EVENT_GROUP_TYPE_CHANGED, libChatGroupTypeChangedReceiver)
 
