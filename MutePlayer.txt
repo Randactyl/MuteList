@@ -8,5 +8,4 @@
 lib\LibStub\LibStub.lua
 lib\libChat2\libChat2.lua
 
-MutePlayerScene.lua
 MutePlayer.lua
