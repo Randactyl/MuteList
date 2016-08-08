@@ -1,13 +1,12 @@
 ## Title: Mute Player
-## Version: 0.1.1.1
+## Version: 0.1.1.2
 ## Author: Randactyl
 ## Description: Mute a player in chat. Overrides game function SharedChatSystem:ShowPlayerContextMenu(playerName, rawName) in sharedchatsystem.lua
-## APIVersion: 100014
+## APIVersion: 100016
 ## SavedVariables: MutePlayerSavedVariables
 
 lib\LibStub\LibStub.lua
 lib\libChat2\libChat2.lua
-lib\LibScroll\LibScroll.lua
 
 MutePlayerScene.lua
 MutePlayer.lua
