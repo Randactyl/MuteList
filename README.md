@@ -12,11 +12,10 @@ Unlike a complete ignore, you can still exchange mail, trade, etc. with a muted 
 To mute someone, simply right-click their name in the chat window and select "Mute."
 
 Slash Commands:
-/mutelist - lists the names of players you have muted in chat. One player per line.
-/unmute x - unmute the provided player name (replace the x with the name).
+ * /mutelist - lists the names of players you have muted in chat. One player per line.
+ * /unmute x - unmute the provided player name (replace the x with the name).
 
-Caveats:
-@names and character names are muted separately. You may need to mute someone twice if you wish to not see what they have to say in both zone and guild, for example.
+Note: @names and character names are muted separately. You may need to mute someone twice if you wish to not see what they have to say in both zone and guild, for example.
 
 ---
 
