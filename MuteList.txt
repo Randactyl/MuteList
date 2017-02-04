@@ -8,6 +8,8 @@
 lib/LibStub/LibStub.lua
 lib/libChat2/libChat2.lua
 lib/LibCustomMenu/LibCustomMenu.lua
+lib/LibSlashCommander/LibSlashCommander.lua
+lib/LibSlashCommander/descriptions/$(language).lua
 
 strings/en.lua
 strings/$(language).lua

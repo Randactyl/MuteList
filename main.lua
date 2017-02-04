@@ -20,23 +20,6 @@ local function onAddonLoaded(eventCode, addonName)
     end
     util.LC:registerName(modifySenderName, "MuteList")
 
-    local function initializeSlashCommands()
-        SLASH_COMMANDS["/mutelist"] = function(args)
-            for playerName, _ in pairs(settings.GetMuteList()) do
-                d(playerName)
-            end
-        end
-
-        SLASH_COMMANDS["/unmute"] = function(playerName)
-            local result = settings.Unmute(playerName)
-
-            if result then
-                df(GetString(SI_MUTELIST_UNMUTE_MESSAGE), playerName)
-            else
-                df(GetString(SI_MUTELIST_UNMUTE_ERROR), playerName)
-            end
-        end
-    end
-    initializeSlashCommands()
+    util.InitializeSlashCommands()
 end
 EVENT_MANAGER:RegisterForEvent("MuteList_OnAddonLoaded", EVENT_ADD_ON_LOADED, onAddonLoaded)

@@ -3,7 +3,44 @@ ML.util = {}
 
 local settings = ML.settings
 local util = ML.util
+util.commands = {}
 util.LC = LibStub("libChat-1.0")
+util.LSC = LibStub("LibSlashCommander")
+
+function util.InitializeSlashCommands()
+    local function muteList()
+        local list = settings.GetMuteList()
+
+        for playerName, _ in pairs(settings.GetMuteList()) do
+            d(playerName)
+        end
+
+        if #list == 0 then d(GetString(SI_MUTELIST_EMPTY_MESSAGE)) end
+    end
+    util.commands.list = util.LSC:Register(GetString(SI_MUTELIST_LSC_LIST_COMMAND), muteList, GetString(SI_MUTELIST_LSC_LIST_DESCRIPTION))
+
+    local function unmute(playerName)
+        local result = settings.Unmute(playerName)
+
+        if result then
+            util.RefreshUnmuteAutoCompleteData()
+            df(GetString(SI_MUTELIST_UNMUTE_MESSAGE), playerName)
+        else
+            df(GetString(SI_MUTELIST_UNMUTE_ERROR), playerName)
+        end
+    end
+    util.commands.unmute = util.LSC:Register(GetString(SI_MUTELIST_LSC_UNMUTE_COMMAND), unmute, GetString(SI_MUTELIST_LSC_UNMUTE_DESCRIPTION))
+end
+
+function util.RefreshUnmuteAutoCompleteData()
+    local autoCompleteData = {}
+    for playerName, _ in pairs(settings.GetMuteList()) do
+        table.insert(autoCompleteData, playerName)
+    end
+    table.sort(autoCompleteData)
+
+    util.unmuteCommand:SetAutoComplete(autoCompleteData)
+end
 
 --override SharedChatSystem:ShowPlayerContextMenu(playerName, rawName) from line 2072 in sharedchatsystem.lua
 function CHAT_SYSTEM:ShowPlayerContextMenu(playerName, rawName)
@@ -40,6 +77,7 @@ function CHAT_SYSTEM:ShowPlayerContextMenu(playerName, rawName)
     if not settings.IsMuted(playerName) then
         AddCustomMenuItem(GetString(SI_MUTELIST_MUTE_OPTION), function()
             settings.Mute(playerName)
+            util.RefreshUnmuteAutoCompleteData()
             df(GetString(SI_MUTELIST_MUTE_MESSAGE), playerName)
         end)
     end
