@@ -1,0 +1,10 @@
+SafeAddString(SI_MUTELIST_EMPTY_MESSAGE, "La liste des muets est vide.", 1)
+SafeAddString(SI_MUTELIST_MUTE_OPTION, "Mute", 1)
+SafeAddString(SI_MUTELIST_MUTE_MESSAGE, "[%s] a été ajouté à la liste des muets.", 1)
+SafeAddString(SI_MUTELIST_UNMUTE_MESSAGE, "[%s] a été enlevé de la liste des muets.", 1)
+SafeAddString(SI_MUTELIST_UNMUTE_ERROR, "[%s] non muet.", 1)
+
+SafeAddString(SI_MUTELIST_LSC_LIST_COMMAND, "/mutelist", 1)
+SafeAddString(SI_MUTELIST_LSC_LIST_DESCRIPTION, "Affiche la liste des muets dans le chat", 1)
+SafeAddString(SI_MUTELIST_LSC_UNMUTE_COMMAND, "/unmute", 1)
+SafeAddString(SI_MUTELIST_LSC_UNMUTE_DESCRIPTION, "Entrer le nom pour rendre la parole", 1)
