@@ -8,4 +8,9 @@
 lib/LibStub/LibStub.lua
 lib/libChat2/libChat2.lua
 
-MutePlayer.lua
+strings/en.lua
+strings/$(language).lua
+
+main.lua
+settings.lua
+util.lua
