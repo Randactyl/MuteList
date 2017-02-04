@@ -1,5 +1,5 @@
 local strings = {
-    SI_MUTELIST_EMPTY_MESSAGE = "Mute list is empty."
+    SI_MUTELIST_EMPTY_MESSAGE = "Mute list is empty.",
     SI_MUTELIST_MUTE_OPTION = "Mute",
     SI_MUTELIST_MUTE_MESSAGE = "[%s] added to mute list.",
     SI_MUTELIST_UNMUTE_MESSAGE = "[%s] removed from mute list.",
