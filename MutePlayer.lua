@@ -41,9 +41,9 @@ local function OnAddonLoaded(eventCode, addonName)
 	if addonName ~= "MutePlayer" then return end
 	EVENT_MANAGER:UnregisterForEvent("MutePlayer_OnAddonLoaded", EVENT_ADD_ON_LOADED)
 
-	savedVars = ZO_SavedVars:NewAccountWide("MutePlayerSavedVariables", 1, nil, { muted = {}, })
+	savedVars = ZO_SavedVars:NewAccountWide("MuteList_Data", 1, nil, { muted = {}, })
 
-	libChat:registerName(modifySenderName, "MutePlayer")
+	libChat:registerName(modifySenderName, "MuteList")
 
 	InitializeSlashCommands()
 end
