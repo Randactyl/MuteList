@@ -1,0 +1,10 @@
+SafeAddString(SI_MUTELIST_EMPTY_MESSAGE, "Die Stummschaltung-Liste ist leer.", 1)
+SafeAddString(SI_MUTELIST_MUTE_OPTION, "Stummschaltung", 1)
+SafeAddString(SI_MUTELIST_MUTE_MESSAGE, "[%s] wurde zur Stummschaltung-Liste hinzugefügt.", 1)
+SafeAddString(SI_MUTELIST_UNMUTE_MESSAGE, "[%s] wurde aus der Stummschaltung-Liste entfernt.", 1)
+SafeAddString(SI_MUTELIST_UNMUTE_ERROR, "[%s] ist nicht stummgeschaltet.", 1)
+
+SafeAddString(SI_MUTELIST_LSC_LIST_COMMAND, "/mutelist", 1)
+SafeAddString(SI_MUTELIST_LSC_LIST_DESCRIPTION, "Gibt die Stummschaltung-Liste im Chat aus", 1)
+SafeAddString(SI_MUTELIST_LSC_UNMUTE_COMMAND, "/unmute", 1)
+SafeAddString(SI_MUTELIST_LSC_UNMUTE_DESCRIPTION, "Gib den Namen ein, damit er der Stummschaltung-Liste hinzugefügt wird", 1)
