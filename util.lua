@@ -10,12 +10,14 @@ util.LSC = LibStub("LibSlashCommander")
 function util.InitializeSlashCommands()
     local function muteList()
         local list = settings.GetMuteList()
+        local empty = true
 
         for playerName, _ in pairs(settings.GetMuteList()) do
             d(playerName)
+            empty = false
         end
 
-        if #list == 0 then d(GetString(SI_MUTELIST_EMPTY_MESSAGE)) end
+        if empty then d(GetString(SI_MUTELIST_EMPTY_MESSAGE)) end
     end
     util.commands.list = util.LSC:Register(GetString(SI_MUTELIST_LSC_LIST_COMMAND), muteList, GetString(SI_MUTELIST_LSC_LIST_DESCRIPTION))
 
