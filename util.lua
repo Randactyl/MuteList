@@ -39,7 +39,7 @@ function util.RefreshUnmuteAutoCompleteData()
     end
     table.sort(autoCompleteData)
 
-    util.unmuteCommand:SetAutoComplete(autoCompleteData)
+    util.commands.unmute:SetAutoComplete(autoCompleteData)
 end
 
 --override SharedChatSystem:ShowPlayerContextMenu(playerName, rawName) from line 2072 in sharedchatsystem.lua
