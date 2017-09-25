@@ -1,6 +1,6 @@
 ## Title: Mute List
-## Version: 1.0.2.1
-## APIVersion: 100018 100019
+## Version: 1.0.2.2
+## APIVersion: 100020
 ## Author: Randactyl
 ## Description: Mute players in chat. Overrides game function SharedChatSystem:ShowPlayerContextMenu(playerName, rawName) in sharedchatsystem.lua
 ## SavedVariables: MuteList_Data
